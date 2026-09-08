@@ -66,13 +66,13 @@ def run_wizard(out_path: Path = DEFAULT_CONFIG_PATH) -> Path:
     keywords = [k.strip() for k in kw_raw.split(",") if k.strip()]
 
     print("\n--- Journal inclusion criteria ---")
-    abs_min = _prompt("Minimum ABS/AJG level (1-4, use 4 for 4*)", "3")
-    abdc_raw = _prompt("Acceptable ABDC grades (comma-separated, blank to disable)", "A*, A")
+    abs_min = _prompt("Minimum ABS/AJG level (1-4, use 4 for 4*)", "4")
+    abdc_raw = _prompt("Acceptable ABDC grades (comma-separated, blank to disable)", "A*")
     sjr = _prompt("Minimum SJR quartile (Q1-Q4, blank to disable)", "Q1")
     include_ft50 = _prompt_bool("Always include FT50 journals?", True)
     include_utd24 = _prompt_bool("Always include UTD24 journals?", True)
 
-    threshold = _prompt("Relevance threshold (0-100)", "80")
+    threshold = _prompt("Relevance threshold (0-100)", "40")
     weight_factor = _prompt("Journal weight factor (0-1)", "0.3")
     window = _prompt("Harvest window in days", "7")
 
