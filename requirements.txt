@@ -1,0 +1,21 @@
+# Core dependencies (zero-cost baseline)
+PyYAML>=6.0
+requests>=2.31
+beautifulsoup4>=4.12
+scikit-learn>=1.3
+numpy>=1.24,<2
+
+# Optional: reading combined ranking spreadsheets (.xlsx)
+# openpyxl>=3.1
+# pandas>=2.0
+
+# Optional: AI mode (local / free)
+#   Semantic similarity via local embeddings
+# sentence-transformers>=2.2
+#
+# LLM summaries/explanations need NO extra Python packages — all providers are
+# called over HTTP via `requests` (already required above):
+#   - local/free:  Ollama (install the app, run `ollama serve`)
+#   - hosted:      OpenAI, Anthropic (Claude), Google Gemini
+#   - presets:     OpenRouter, Together, Groq, DeepSeek, Fireworks
+#   - custom:      any other OpenAI-compatible endpoint via ai_settings.llm_base_url

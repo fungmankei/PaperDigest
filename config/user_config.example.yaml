@@ -1,0 +1,90 @@
+# ============================================================================
+# Weekly Journal Digest — user configuration
+# ----------------------------------------------------------------------------
+# Copy this file to `user_config.yaml` (same directory) and edit it, OR run
+# the interactive wizard:  python -m src.ui_cli
+#
+# SECURITY: user_config.yaml is git-ignored. Prefer environment variables for
+# secrets (they override the values below):
+#   DIGEST_SMTP_PASSWORD   -> email.smtp_password
+#   DIGEST_LLM_API_KEY     -> ai_settings.llm_api_key
+# ============================================================================
+
+# Research areas — must match labels in config/areas.yaml (the "drop down").
+areas:
+  - Marketing
+  - Information Systems
+
+# Free-text keywords describing your research interests.
+keywords:
+  - digital platforms
+  - causal inference
+  - marketing analytics
+
+# Journal inclusion criteria. A journal is included if it satisfies ANY of the
+# enabled rules below (union), then must also match at least one selected area.
+journal_inclusion:
+  abs_min_level: 4          # keep journals with ABS/AJG level >= this (1..4, 4* -> 4.5)
+  abdc_grades: ["A*"]       # keep journals with these ABDC grades (set [] to disable)
+  sjr_quartile: "Q1"        # keep journals at this SJR quartile or better (null to disable)
+  include_ft50: true        # always include FT50 journals
+  include_utd24: true       # always include UTD24 journals
+
+# Articles with final_score >= threshold (0..100) are considered "relevant".
+# Scores are content-only (TF-IDF + keyword coverage) and NORMALISED per run:
+# the most relevant article each week scores 100 and the rest scale relative to
+# it. ~40 is a sensible starting point ("at least 40% as relevant as the best
+# match"); lower it for more articles, raise it to be stricter.
+relevance_threshold: 40
+
+# DEPRECATED / UNUSED: journal prestige is no longer part of the relevance
+# score. The journal weight is retained in the registry for reference only.
+journal_weight_factor: 0.3
+
+# How many days back to harvest newly published articles.
+harvest_window_days: 7
+
+email:
+  address: "user@example.com"     # recipient of the digest
+  from_address: null              # defaults to `address` if null
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+  smtp_username: "user@example.com"
+  smtp_password: null             # prefer env var DIGEST_SMTP_PASSWORD (app password!)
+  use_tls: true
+  send_heartbeat: true            # send a short "ran successfully" email if 0 articles
+
+ai_settings:
+  use_ai_agents: false            # false = zero-cost TF-IDF baseline
+  embedding_model: null           # e.g. "all-MiniLM-L6-v2" (sentence-transformers, local/free)
+  # LLM provider for summaries/explanations. One of:
+  #   local/free:  "ollama"
+  #   hosted:      "openai" | "anthropic" | "gemini"
+  #   OpenAI-compatible presets: "openrouter" | "together" | "groq" | "deepseek" | "fireworks"
+  #   any other OpenAI-compatible endpoint: "custom" (then set llm_base_url + llm_model)
+  llm_provider: null
+  llm_model: null                 # e.g. "gpt-4o-mini", "claude-3-5-haiku-latest", "gemini-1.5-flash", "llama3.2"
+  llm_api_key: null               # required for hosted providers; prefer env var DIGEST_LLM_API_KEY
+  llm_base_url: null              # override endpoint; required when llm_provider: "custom"
+                                  #   (also reused as the Ollama host if set)
+  ai_weight: 0.5                  # blend of AI semantic score vs TF-IDF when AI enabled (0..1)
+
+# Optional institutional access (stored locally only, never committed).
+access:
+  proxy_url: null
+  cookies_file: null              # path to a cookies.txt for scraping fallback
+
+# Registry / harvesting tuning.
+harvest:
+  crossref_mailto: "user@example.com"   # polite pool for CrossRef API
+  max_workers: 8                        # parallel journal fetches
+  cache_ttl_hours: 24
+  max_articles_per_journal: 50
+  enable_scraping_fallback: true
+  # Which journal registry to monitor. Default (null) = data/journals.csv.
+  # Point this at the elite subset to monitor only top journals.
+  registry_file: "data/journals_elite.csv"
+  # elite_only: only monitor elite journals (FT50 / UTD24 / ABS 4*,4 / ABDC A*),
+  # still restricted to the areas selected above. When false, the
+  # journal_inclusion criteria are used instead.
+  elite_only: true

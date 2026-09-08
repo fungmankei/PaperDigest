@@ -1,0 +1,50 @@
+name: Weekly Journal Digest
+
+# Cloud automation via GitHub Actions — runs the digest even when your device
+# is off. Store SMTP credentials in the repository's Actions Secrets:
+#   Settings -> Secrets and variables -> Actions:
+#     DIGEST_SMTP_PASSWORD   (required)
+#     DIGEST_LLM_API_KEY     (optional, only for hosted AI providers)
+#
+# You must also commit a config/user_config.yaml WITHOUT secrets (the SMTP
+# password is injected from the secret at runtime), and a data/journals.csv.
+# If those are git-ignored in your fork, either un-ignore them or generate
+# journals.csv in a build step from a file you store as an artifact/secret.
+
+on:
+  schedule:
+    - cron: "0 8 * * SUN"   # Sundays 08:00 UTC
+  workflow_dispatch:         # allow manual runs from the Actions tab
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run weekly digest
+        env:
+          DIGEST_SMTP_PASSWORD: ${{ secrets.DIGEST_SMTP_PASSWORD }}
+          DIGEST_LLM_API_KEY: ${{ secrets.DIGEST_LLM_API_KEY }}
+        run: python -m src.main
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: digest-logs
+          path: logs/
+          retention-days: 14

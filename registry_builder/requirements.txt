@@ -1,0 +1,6 @@
+# Journal Registry Builder dependencies
+requests>=2.31          # OpenAlex + ABDC download
+PyYAML>=6.0             # areas.yaml sync (via main package)
+
+# Optional: only needed to parse .xlsx ABDC/ABS files you provide
+# openpyxl>=3.1

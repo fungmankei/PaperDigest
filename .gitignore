@@ -1,0 +1,39 @@
+# --- Secrets & user data (NEVER commit) ---
+config/user_config.yaml
+*.secret.yaml
+.env
+*.pem
+cookies.txt
+proxies.txt
+
+# --- Runtime artifacts ---
+logs/*.log
+data/cache/*
+!data/cache/.gitkeep
+registry_builder/data/cache/
+# Generated from your private ranking lists (ABS/ABDC are licensed — do not commit).
+# Keep the small public sample, ignore the built/derived files.
+data/journals.csv
+
+data/archive/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
