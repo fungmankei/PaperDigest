@@ -58,3 +58,4 @@ Then schedule it weekly — see [`src/automation/`](src/automation) or the
 
 See [LICENSE](LICENSE). Journal ranking lists are the property of their
 respective owners and are **not** distributed with this project.
+# PaperDigest
