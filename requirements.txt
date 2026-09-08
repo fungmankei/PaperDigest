@@ -12,6 +12,7 @@ numpy>=1.24,<2
 # Optional: AI mode (local / free)
 #   Semantic similarity via local embeddings
 # sentence-transformers>=2.2
+# torch>=2.5
 #
 # LLM summaries/explanations need NO extra Python packages — all providers are
 # called over HTTP via `requests` (already required above):
